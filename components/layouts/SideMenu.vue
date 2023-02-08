@@ -95,6 +95,7 @@ const activePath = () => route.path;
 
   &__title {
     font-family: inherit;
+    font-size: 17px;
     font-weight: 400;
   }
 }

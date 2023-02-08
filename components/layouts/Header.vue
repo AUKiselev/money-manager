@@ -44,7 +44,7 @@ const { getFullName } = storeToRefs(userStore);
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    border: 2px solid $gray2;
+    border: 2px solid $turquoise1; // или $gray2
     color: $black1;
   }
 }

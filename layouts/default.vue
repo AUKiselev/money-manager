@@ -36,8 +36,10 @@ const asideWidth = computed<string>(() => (menuCollapsed.value ? '64px' : '200px
 }
 
 .main-sidebar__wrapper {
+  position: relative;
   height: 100%;
-  border-right: 1px solid $gray1;
+  background-color: $white;
+  box-shadow: 10px 20px 25px rgba(29, 52, 54, 0.08);
   transition: width .5s;
   overflow-x: hidden;
 }

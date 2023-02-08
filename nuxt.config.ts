@@ -1,5 +1,3 @@
-// import ElementPlus from 'unplugin-element-plus/vite';
-
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   vite: {
@@ -29,12 +27,7 @@ export default defineNuxtConfig({
     dirs: ['@/components/general'],
   },
 
-  build: {
-    transpile: ['element-plus/es'],
-  },
-
   css: [
-    'element-plus/dist/index.css',
     '~/assets/scss/style.scss',
   ],
 });
