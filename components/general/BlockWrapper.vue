@@ -16,13 +16,15 @@ defineProps<IProps>();
 
 <style lang="scss" scoped>
 .block-wrapper {
+  display: flex;
+  align-items: center;
   position: relative;
   max-height: 120px;
   width: 100%;
   height: 100%;
+  padding: 0 20px;
   border-radius: 5px;
   border: 1px solid $turquoise1;
-  padding: 20px;
   background-color: $white;
   box-shadow: 0 10px 25px rgba(29, 52, 54, .08);
 
@@ -37,6 +39,12 @@ defineProps<IProps>();
     line-height: 20px;
     font-weight: 500;
     color: $turquoise1;
+  }
+
+  &__content {
+    display: flex;
+    align-items: center;
+    column-gap: 25px;
   }
 }
 </style>

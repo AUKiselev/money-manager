@@ -1,8 +1,19 @@
 <template>
   <main class="main-content">
-    <BlockWrapper title="Доходы" />
+    <BlockWrapper title="Доходы">
+      <template #content>
+        <MoneyItem />
+        <MoneyItem />
+        <MoneyItem />
+        <MoneyItem />
+      </template>
+    </BlockWrapper>
   </main>
 </template>
+
+<script setup lang="ts">
+import MoneyItem from '@/components/main/MoneyItem.vue';
+</script>
 
 <style lang="scss" scoped>
 .main-content {
