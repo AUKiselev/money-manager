@@ -28,7 +28,18 @@
   },
   "dependencies": {
     "@pinia/nuxt": "^0.4.6",
+    "@vueuse/core": "^9.12.0",
+    "@vueuse/nuxt": "^9.12.0",
     "element-plus": "^2.2.28",
     "pinia": "^2.0.30"
+  },
+  "pnpm": {
+    "peerDependencyRules": {
+      "ignoreMissing": [
+        "webpack",
+        "vite",
+        "vue"
+      ]
+    }
   }
 }

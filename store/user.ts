@@ -6,12 +6,12 @@ export const useUserStore = defineStore('userStore', {
   state: () => ({
     user: {
       firstName: 'Alehandro',
-      lastName: 'Kiselev',
+      lastName: 'Samoro',
     } as IUser,
   }),
 
   getters: {
-    getFullName():string {
+    getFullName(): string {
       return `${this.user.firstName} ${this.user.lastName}`;
     },
   },
