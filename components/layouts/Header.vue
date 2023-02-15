@@ -1,7 +1,7 @@
 <template>
   <div class="main-header">
     <div class="user-info">
-      <p class="user-info__name" v-html="getFullName" />
+      <p class="user-info__name" v-html="user.login" />
       <Icon
         class="user-info__avatar"
         size="35px"
@@ -16,7 +16,7 @@ import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/store/user';
 
 const userStore = useUserStore();
-const { getFullName } = storeToRefs(userStore);
+const { user } = storeToRefs(userStore);
 </script>
 
 <style lang="scss" scoped>

@@ -5,7 +5,7 @@
         <MoneyItem />
         <MoneyItem />
         <MoneyItem />
-        <MoneyItem />
+        <NewMoneyItem />
       </template>
     </BlockWrapper>
   </main>
@@ -13,6 +13,7 @@
 
 <script setup lang="ts">
 import MoneyItem from '@/components/main/MoneyItem.vue';
+import NewMoneyItem from '@/components/main/NewMoneyItem.vue';
 </script>
 
 <style lang="scss" scoped>
