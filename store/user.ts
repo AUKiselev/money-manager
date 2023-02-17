@@ -1,6 +1,7 @@
 import { defineStore, storeToRefs } from 'pinia';
 import { useLayoutStore } from '@/store/layout';
 import { IUser, IUserData } from '@/models/user';
+import { userRegister, userLogin, refreshTokens } from '@/api/auth';
 
 export const useUserStore = defineStore('userStore', {
   state: () => ({
@@ -15,11 +16,22 @@ export const useUserStore = defineStore('userStore', {
 
   getters: {
     getFullName(): string {
-      return `${this.user.firstName} ${this.user.lastName}`;
+      if (this.user.firstName && this.user.lastName) {
+        return `${this.user.firstName} ${this.user.lastName}`;
+      }
+      return '';
     },
   },
 
   actions: {
+    initData(userData: IUserData) {
+      this.user = { ...userData.user };
+      this.accessToken = userData.accessToken;
+      localStorage.setItem('Authorization', `Bearer ${userData.accessToken}`);
+      const tokenCookie = useCookie('refreshToken', { maxAge: 30 * 24 * 60 * 60 * 1000 });
+      tokenCookie.value = userData.refreshToken;
+    },
+
     async registerUser(
       email: string,
       password: string,
@@ -31,18 +43,14 @@ export const useUserStore = defineStore('userStore', {
 
       try {
         isLoading.value = true;
-        const { user, accessToken } = await $fetch<IUserData>('http://localhost:5010/api/users/registration/', {
-          method: 'POST',
-          body: {
-            email,
-            password,
-            firstName,
-            lastName,
-          },
-        });
 
-        this.user = { ...user };
-        this.accessToken = accessToken;
+        const response = await userRegister(email, password, firstName, lastName);
+
+        if (!response) {
+          throw new Error('Ошибка запроса');
+        }
+
+        this.initData(response);
 
         return true;
       } catch (e) {
@@ -59,16 +67,14 @@ export const useUserStore = defineStore('userStore', {
 
       try {
         isLoading.value = true;
-        const { user, accessToken } = await $fetch<IUserData>('http://localhost:5010/api/users/login/', {
-          method: 'POST',
-          body: {
-            email,
-            password,
-          },
-        });
 
-        this.user = { ...user };
-        this.accessToken = accessToken;
+        const response = await userLogin(email, password);
+
+        if (!response) {
+          throw new Error('Ошибка запроса');
+        }
+
+        this.initData(response);
 
         return true;
       } catch (e) {
@@ -76,6 +82,20 @@ export const useUserStore = defineStore('userStore', {
         return null;
       } finally {
         isLoading.value = false;
+      }
+    },
+
+    async refreshTokens() {
+      try {
+        const response = await refreshTokens();
+
+        if (!response) {
+          throw new Error('Ошибка запроса');
+        }
+
+        this.initData(response);
+      } catch (e) {
+        console.error(e);
       }
     },
   },

@@ -1,7 +1,9 @@
 <template>
   <div class="main-header">
     <div class="user-info">
-      <p class="user-info__name" v-html="getFullName" />
+      <p class="user-info__name">
+        {{ getFullName }}
+      </p>
       <Icon
         class="user-info__avatar"
         size="35px"
