@@ -46,6 +46,7 @@
 <script setup lang="ts">
 import type { FormInstance, FormRules } from 'element-plus';
 import { IAuthForm } from '@/models/forms';
+import { useUserStore } from '@/store/user';
 
 const formRef = ref<FormInstance>();
 const authForm = reactive<IAuthForm>({
@@ -66,12 +67,28 @@ const rules = reactive<FormRules>({
   ],
 });
 
+const userStore = useUserStore();
+const { authUser } = userStore;
 const submitForm = () => {
-  // formRef.value?.validate(valid => {
-  //   if (valid) {
-  //     console.log('success');
-  //   }
-  // });
+  formRef.value?.validate(async valid => {
+    if (valid) {
+      const { email, password } = authForm;
+
+      try {
+        const isSuccess = await authUser(email, password);
+        if (!isSuccess) {
+          throw new Error('Some error');
+        }
+
+        const router = useRouter();
+        router.push({ path: '/' });
+      } catch (e) {
+        console.error(e);
+      }
+
+      formRef.value?.resetFields();
+    }
+  });
 };
 </script>
 

@@ -1,5 +1,6 @@
 export interface IRegistrationForm {
-  login: string,
+  firstName?: string;
+  lastName?: string;
   email: string,
   password: string,
   repeatPass: string,

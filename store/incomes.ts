@@ -16,7 +16,7 @@ export const useIncomesStore = defineStore('incomesStore', {
     },
 
     async createNewIncome(name: string) {
-      const response = await useFetch('http://localhost:5011/api/incomes/', {
+      const response = await useFetch('http://localhost:5010/api/incomes/', {
         method: 'POST',
         body: {
           name,

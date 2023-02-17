@@ -10,11 +10,19 @@
       :rules="rules"
       class="registration-form__form"
     >
-      <el-form-item class="registration-form__item" prop="login">
+      <el-form-item class="registration-form__item">
         <el-input
-          v-model="registrationForm.login"
+          v-model="registrationForm.firstName"
           class="registration-form__input"
-          placeholder="Введите логин"
+          placeholder="Введите имя(необязательно)"
+        />
+      </el-form-item>
+
+      <el-form-item class="registration-form__item">
+        <el-input
+          v-model="registrationForm.lastName"
+          class="registration-form__input"
+          placeholder="Введите фамилию(необязательно)"
         />
       </el-form-item>
 
@@ -56,24 +64,24 @@
 <script setup lang="ts">
 import type { FormInstance, FormRules } from 'element-plus';
 import { IRegistrationForm } from '@/models/forms';
+import { useUserStore } from '@/store/user';
 
 const formRef = ref<FormInstance>();
 const registrationForm = reactive<IRegistrationForm>({
-  login: '',
+  firstName: '',
+  lastName: '',
   email: '',
   password: '',
   repeatPass: '',
 });
 
-const loginValidate = (rule: any, value: string, callback: any) => {
-  if (!value) {
-    callback(new Error('Введите логин'));
-  } else if (value.length < 3) {
-    callback(new Error('Логин должен быть длиннее 3 символов'));
-  } else {
-    callback();
-  }
-};
+// const nameValidate = (rule: any, value: string, callback: any) => {
+//   if (!value) {
+//     callback(new Error('Введите имя и фамилию'));
+//   } else {
+//     callback();
+//   }
+// };
 
 const passValidate = (rule: any, value: string, callback: any) => {
   if (!value) {
@@ -96,13 +104,12 @@ const repeatPassValidate = (rule: any, value: string, callback: any) => {
 };
 
 const rules = reactive<FormRules>({
-  login: [
-    {
-      required: true,
-      validator: loginValidate,
-      trigger: 'submit',
-    },
-  ],
+  // name: [
+  //   {
+  //     validator: nameValidate,
+  //     trigger: 'submit',
+  //   },
+  // ],
   email: [
     {
       required: true,
@@ -123,12 +130,30 @@ const rules = reactive<FormRules>({
   ],
 });
 
+const userStore = useUserStore();
+const { registerUser } = userStore;
 const submitForm = () => {
-  // formRef.value?.validate(valid => {
-  //   if (valid) {
-  //     console.log('success');
-  //   }
-  // });
+  formRef.value?.validate(async valid => {
+    if (valid) {
+      const {
+        email, password, firstName, lastName,
+      } = registrationForm;
+
+      try {
+        const isSuccess = await registerUser(email, password, firstName, lastName);
+        if (!isSuccess) {
+          throw new Error('Some error');
+        }
+
+        const router = useRouter();
+        router.push({ path: '/' });
+      } catch (e) {
+        console.error(e);
+      }
+
+      formRef.value?.resetFields();
+    }
+  });
 };
 </script>
 
@@ -183,7 +208,6 @@ const submitForm = () => {
   }
 
   &__submit {
-    // width: 100px;
     height: 40px;
     border-radius: 8px;
     background-color: $turquoise1;
