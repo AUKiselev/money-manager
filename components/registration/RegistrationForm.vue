@@ -9,6 +9,7 @@
       :model="registrationForm"
       :rules="rules"
       class="registration-form__form"
+      @keyup.enter="submitForm()"
     >
       <el-form-item class="registration-form__item">
         <el-input

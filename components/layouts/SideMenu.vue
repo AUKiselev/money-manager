@@ -11,6 +11,7 @@
         :key="`main-menu__item-${index}`"
         :index="item.index"
         class="main-menu__item"
+        @click="item.clickHandler"
       >
         <Icon :name="item.icon" size="24px" />
         <template #title>
@@ -31,32 +32,41 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { useLayoutStore } from '@/store/layout';
+import { useUserStore } from '@/store/user';
+import { IMenuItem } from '@/models/menu';
 
 const layoutStore = useLayoutStore();
 const { menuCollapsed } = storeToRefs(layoutStore);
 const { toggleMenuCollapse } = layoutStore;
+
+const userStore = useUserStore();
+const { logout } = userStore;
+const logoutHandler = () => {
+  logout();
+};
 
 const menuList = reactive({
   main: {
     title: 'Главная',
     index: '/',
     icon: 'dashicons:admin-home',
-  },
+  } as IMenuItem,
   statistics: {
     title: 'Статистика',
     index: '/statistics',
     icon: 'dashicons:chart-bar',
-  },
+  } as IMenuItem,
   settings: {
     title: 'Настройки',
     index: '/settings',
     icon: 'dashicons:admin-generic',
-  },
+  } as IMenuItem,
   logout: {
     title: 'Выйти',
-    index: '/logout',
+    index: '/auth',
     icon: 'ri:arrow-go-back-fill',
-  },
+    clickHandler: logoutHandler,
+  } as IMenuItem,
 });
 
 const route = useRoute();

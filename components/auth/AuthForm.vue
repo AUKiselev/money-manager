@@ -9,6 +9,7 @@
       :model="authForm"
       :rules="rules"
       class="auth-form__form"
+      @keyup.enter="submitForm()"
     >
       <el-form-item class="auth-form__item" prop="email">
         <el-input

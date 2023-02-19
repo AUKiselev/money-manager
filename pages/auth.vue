@@ -9,6 +9,7 @@ import AuthForm from '@/components/auth/AuthForm.vue';
 
 definePageMeta({
   layout: 'empty-layout',
+  middleware: ['auth'],
 });
 </script>
 

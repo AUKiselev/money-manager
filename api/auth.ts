@@ -12,6 +12,7 @@ export const userRegister = async (
     const { user, accessToken, refreshToken } = await $fetch<IUserData>('users/registration/', {
       baseURL: baseUrl,
       method: 'POST',
+      credentials: 'include',
       body: {
         email,
         password,
@@ -38,6 +39,7 @@ export const userLogin = async (email: string, password: string): Promise<IUserD
     const { user, accessToken, refreshToken } = await $fetch<IUserData>('users/login/', {
       baseURL: baseUrl,
       method: 'POST',
+      credentials: 'include',
       body: {
         email,
         password,
@@ -73,5 +75,19 @@ export const refreshTokens = async (): Promise<IUserData | undefined> => {
   } catch (e) {
     console.error(e);
     return undefined;
+  }
+};
+
+export const logout = async (): Promise<void> => {
+  const { baseUrl } = useRuntimeConfig().public;
+
+  try {
+    await useFetch('users/logout/', {
+      baseURL: baseUrl,
+      method: 'GET',
+      credentials: 'include',
+    });
+  } catch (e) {
+    console.error(e);
   }
 };

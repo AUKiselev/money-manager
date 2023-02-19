@@ -9,6 +9,7 @@ import RegistrationForm from '@/components/registration/RegistrationForm.vue';
 
 definePageMeta({
   layout: 'empty-layout',
+  middleware: ['auth'],
 });
 </script>
 

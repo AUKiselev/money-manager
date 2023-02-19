@@ -1,7 +1,9 @@
 import { defineStore, storeToRefs } from 'pinia';
 import { useLayoutStore } from '@/store/layout';
 import { IUser, IUserData } from '@/models/user';
-import { userRegister, userLogin, refreshTokens } from '@/api/auth';
+import {
+  userRegister, userLogin, refreshTokens, logout,
+} from '@/api/auth';
 
 export const useUserStore = defineStore('userStore', {
   state: () => ({
@@ -12,6 +14,7 @@ export const useUserStore = defineStore('userStore', {
       lastName: '',
     } as IUser,
     accessToken: '',
+    isAuth: false,
   }),
 
   getters: {
@@ -28,8 +31,6 @@ export const useUserStore = defineStore('userStore', {
       this.user = { ...userData.user };
       this.accessToken = userData.accessToken;
       localStorage.setItem('Authorization', `Bearer ${userData.accessToken}`);
-      const tokenCookie = useCookie('refreshToken', { maxAge: 30 * 24 * 60 * 60 * 1000 });
-      tokenCookie.value = userData.refreshToken;
     },
 
     async registerUser(
@@ -51,10 +52,10 @@ export const useUserStore = defineStore('userStore', {
         }
 
         this.initData(response);
+        this.isAuth = true;
 
         return true;
       } catch (e) {
-        console.error(e);
         return null;
       } finally {
         isLoading.value = false;
@@ -69,34 +70,50 @@ export const useUserStore = defineStore('userStore', {
         isLoading.value = true;
 
         const response = await userLogin(email, password);
-
         if (!response) {
           throw new Error('Ошибка запроса');
         }
 
         this.initData(response);
+        this.isAuth = true;
 
         return true;
       } catch (e) {
-        console.error(e);
         return null;
       } finally {
         isLoading.value = false;
       }
     },
 
-    async refreshTokens() {
+    async checkAuth(): Promise<boolean | null> {
+      const layoutStore = useLayoutStore();
+      const { isLoading } = storeToRefs(layoutStore);
+
       try {
+        isLoading.value = true;
         const response = await refreshTokens();
 
-        if (!response) {
+        if (!response?.user || !response?.refreshToken || !response?.accessToken) {
           throw new Error('Ошибка запроса');
         }
 
         this.initData(response);
+        this.isAuth = true;
+
+        return true;
       } catch (e) {
-        console.error(e);
+        return null;
+      } finally {
+        isLoading.value = false;
       }
+    },
+
+    async logout() {
+      await logout();
+      this.user = {} as IUser;
+      this.accessToken = '';
+      this.isAuth = false;
+      localStorage.removeItem('Authorization');
     },
   },
 });
