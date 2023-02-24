@@ -1,6 +1,6 @@
 <template>
   <div class="new-item">
-    <button class="new-item__add" @click="test()">
+    <button class="new-item__add">
       <Icon
         class="new-item__icon"
         name="ic:baseline-plus"
@@ -11,14 +11,14 @@
 </template>
 
 <script setup lang="ts">
-import { useIncomesStore } from '@/store/incomes';
+// import { useIncomesStore } from '@/store/incomes';
 
-const incomesStore = useIncomesStore();
-const { createNewIncome } = incomesStore;
+// const incomesStore = useIncomesStore();
+// const { createNewIncome } = incomesStore;
 
-const test = () => {
-  createNewIncome('test123');
-};
+// const test = () => {
+//   createNewIncome('test123');
+// };
 </script>
 
 <style lang="scss" scoped>

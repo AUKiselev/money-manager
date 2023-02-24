@@ -1,0 +1,138 @@
+<template>
+  <section :class="['item', props.type.toLowerCase()]">
+    <div class="item__helpers">
+      <div class="item__icon-wrapper">
+        <Icon
+          class="item__icon"
+          name="ic:baseline-plus"
+          size="25px"
+        />
+      </div>
+      <div class="item__buttons">
+        <button class="item__delete-button">
+          <Icon
+            class="item__delete-icon"
+            name="tabler:trash"
+            size="17px"
+          />
+        </button>
+        <button class="item__change-button">
+          <Icon
+            class="item__change-icon"
+            name="tabler:pencil"
+            size="17px"
+          />
+        </button>
+      </div>
+    </div>
+    <h3 class="item__title">
+      {{ props.name }}
+    </h3>
+    <p class="item__sum">
+      {{ formatedSum }}
+    </p>
+  </section>
+</template>
+
+<script setup lang="ts">
+interface IProps {
+  type: 'BILL' | 'INCOME' | 'COST';
+  icon?: string;
+  name: string;
+  sum: number;
+  changeHandler?: Function;
+  deleteHandler?: Function;
+}
+const props = defineProps<IProps>();
+
+const formatedSum = computed(() => `${props.sum} ₽`);
+</script>
+
+<style lang="scss" scoped>
+.item {
+  max-width: 175px;
+  width: 100%;
+  border-radius: 14px;
+  padding: 5px 10px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, .20);
+
+  &__helpers {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__icon-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+
+  &__buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  &__delete-button,
+  &__change-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    background-color: $white;
+    color: $black1;
+    cursor: pointer;
+    transition: color .2s;
+
+    &:hover {
+      color: $gray2;
+    }
+  }
+
+  &__change-icon {
+    max-width: 17px;
+    max-height: 17px;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__title {
+    margin-top: 5px;
+    font-size: 16px;
+    line-height: 19px;
+    font-weight: 400;
+    color: $gray2;
+  }
+
+  &__sum {
+    font-size: 25px;
+    line-height: 29px;
+    font-weight: 500;
+    color: $black1;
+  }
+
+  &.income {
+    .item__icon-wrapper {
+      background-color: $light-green;
+      color: $green;
+    }
+  }
+
+  &.bill {
+    .item__icon-wrapper {
+      background-color: $gray1-hover;
+      color: $black1;
+    }
+  }
+
+  &.cost {
+    .item__icon-wrapper {
+      background-color: $light-red;
+      color: $red;
+    }
+  }
+}
+</style>

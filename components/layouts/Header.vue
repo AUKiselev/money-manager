@@ -1,16 +1,18 @@
 <template>
-  <div class="main-header">
-    <div class="user-info">
-      <p class="user-info__name">
-        {{ getFullName }}
-      </p>
-      <Icon
-        class="user-info__avatar"
-        size="35px"
-        name="line-md:account"
-      />
+  <ClientOnly>
+    <div class="main-header">
+      <div class="user-info">
+        <p class="user-info__name">
+          {{ getFullName }}
+        </p>
+        <Icon
+          class="user-info__avatar"
+          size="35px"
+          name="line-md:account"
+        />
+      </div>
     </div>
-  </div>
+  </ClientOnly>
 </template>
 
 <script setup lang="ts">

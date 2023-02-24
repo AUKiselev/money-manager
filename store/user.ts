@@ -1,4 +1,7 @@
 import { defineStore, storeToRefs } from 'pinia';
+import { useBillsStore } from './bills';
+import { useCostsStore } from './costs';
+import { useIncomesStore } from './incomes';
 import { useLayoutStore } from '@/store/layout';
 import { IUser, IUserData } from '@/models/user';
 import {
@@ -28,9 +31,28 @@ export const useUserStore = defineStore('userStore', {
 
   actions: {
     initData(userData: IUserData) {
-      this.user = { ...userData.user };
+      const {
+        id, email, firstName, lastName,
+      } = userData.user;
+      this.user = {
+        id, email, firstName, lastName,
+      };
       this.accessToken = userData.accessToken;
       localStorage.setItem('Authorization', `Bearer ${userData.accessToken}`);
+
+      const { incomes, bills, costs } = userData.user;
+
+      const incomesStore = useIncomesStore();
+      const { setIncomes } = incomesStore;
+      setIncomes(incomes);
+
+      const costsStore = useCostsStore();
+      const { setCosts } = costsStore;
+      setCosts(costs);
+
+      const billsStore = useBillsStore();
+      const { setBills } = billsStore;
+      setBills(bills);
     },
 
     async registerUser(

@@ -23,7 +23,7 @@ defineProps<IProps>();
   width: 100%;
   height: 100%;
   padding: 0 20px;
-  border-radius: 5px;
+  border-radius: 10px;
   border: 1px solid $turquoise1;
   background-color: $white;
   box-shadow: 0 10px 25px rgba(29, 52, 54, .08);
@@ -34,7 +34,8 @@ defineProps<IProps>();
     left: 20px;
     display: inline-block;
     padding: 0 5px;
-    background: linear-gradient(to bottom, $white1 75%, $white 25%);
+    // background: linear-gradient(to bottom, $white1 75%, $white 25%);
+    background: linear-gradient(to bottom, $white1 75%, $white 100%);
     font-size: 20px;
     line-height: 20px;
     font-weight: 500;
@@ -45,6 +46,7 @@ defineProps<IProps>();
     display: flex;
     align-items: center;
     column-gap: 25px;
+    width: 100%;
   }
 }
 </style>
