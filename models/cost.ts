@@ -1,5 +1,5 @@
 export interface ICost {
-  id: string
+  _id: string
   name: string;
   sum: number;
   limit: number;

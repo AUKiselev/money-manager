@@ -5,6 +5,7 @@
         <ItemWrapper
           v-for="(item, index) of bills"
           :key="`main-page-bills-${index}`"
+          :object-id="item._id"
           :sum="item.sum"
           :name="item.name"
           type="BILL"
@@ -17,11 +18,10 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import ItemWrapper from '@/components/main/ItemWrapper.vue';
-import { useBillsStore } from '@/store/bills';
+import { useObjectsStore } from '@/store/objects';
 
-const billsStore = useBillsStore();
-const { bills } = storeToRefs(billsStore);
-
+const objectsStore = useObjectsStore();
+const { bills } = storeToRefs(objectsStore);
 </script>
 
 <style lang="scss" scoped>

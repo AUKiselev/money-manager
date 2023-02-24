@@ -13,6 +13,7 @@
     >
       <el-form-item class="auth-form__item" prop="email">
         <el-input
+          ref="emailInput"
           v-model="authForm.email"
           class="auth-form__input"
           placeholder="E-mail"
@@ -91,6 +92,11 @@ const submitForm = () => {
     }
   });
 };
+
+const emailInput = ref<HTMLInputElement | null>(null);
+onMounted(() => {
+  emailInput.value?.focus();
+});
 </script>
 
 <style lang="scss">
@@ -148,6 +154,7 @@ const submitForm = () => {
     height: 40px;
     border-radius: 8px;
     background-color: $turquoise1;
+    font-family: inherit;
     color: $white1;
     transition: all .3s;
 

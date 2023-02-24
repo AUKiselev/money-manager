@@ -5,11 +5,12 @@
         <ItemWrapper
           v-for="(item, index) of incomes"
           :key="`main-page-incomes-${index}`"
+          :object-id="item._id"
           :sum="item.sum"
           :name="item.name"
           type="INCOME"
         />
-      <!-- <NewIncomeItem /> -->
+        <!-- <NewIncomeItem /> -->
       </template>
     </BlockWrapper>
   </ClientOnly>
@@ -19,10 +20,10 @@
 import { storeToRefs } from 'pinia';
 // import NewIncomeItem from '@/components/main/incomes/NewIncomeItem.vue';
 import ItemWrapper from '@/components/main/ItemWrapper.vue';
-import { useIncomesStore } from '@/store/incomes';
+import { useObjectsStore } from '@/store/objects';
 
-const incomesStore = useIncomesStore();
-const { incomes } = storeToRefs(incomesStore);
+const objectsStore = useObjectsStore();
+const { incomes } = storeToRefs(objectsStore);
 
 </script>
 

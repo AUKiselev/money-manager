@@ -5,6 +5,7 @@
         <ItemWrapper
           v-for="(item, index) of costs"
           :key="`main-page-costs-${index}`"
+          :object-id="item._id"
           :sum="item.sum"
           :name="item.name"
           type="COST"
@@ -17,10 +18,10 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import ItemWrapper from '@/components/main/ItemWrapper.vue';
-import { useCostsStore } from '@/store/costs';
+import { useObjectsStore } from '@/store/objects';
 
-const costsStore = useCostsStore();
-const { costs } = storeToRefs(costsStore);
+const objectsStore = useObjectsStore();
+const { costs } = storeToRefs(objectsStore);
 
 </script>
 

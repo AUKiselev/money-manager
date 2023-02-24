@@ -1,7 +1,5 @@
 import { defineStore, storeToRefs } from 'pinia';
-import { useBillsStore } from './bills';
-import { useCostsStore } from './costs';
-import { useIncomesStore } from './incomes';
+import { useObjectsStore } from './objects';
 import { useLayoutStore } from '@/store/layout';
 import { IUser, IUserData } from '@/models/user';
 import {
@@ -42,17 +40,11 @@ export const useUserStore = defineStore('userStore', {
 
       const { incomes, bills, costs } = userData.user;
 
-      const incomesStore = useIncomesStore();
-      const { setIncomes } = incomesStore;
-      setIncomes(incomes);
-
-      const costsStore = useCostsStore();
-      const { setCosts } = costsStore;
-      setCosts(costs);
-
-      const billsStore = useBillsStore();
-      const { setBills } = billsStore;
+      const objectsStore = useObjectsStore();
+      const { setBills, setCosts, setIncomes } = objectsStore;
       setBills(bills);
+      setCosts(costs);
+      setIncomes(incomes);
     },
 
     async registerUser(

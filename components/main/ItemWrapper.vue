@@ -9,7 +9,7 @@
         />
       </div>
       <div class="item__buttons">
-        <button class="item__delete-button">
+        <button class="item__delete-button" @click="deleteHandler">
           <Icon
             class="item__delete-icon"
             name="tabler:trash"
@@ -35,17 +35,30 @@
 </template>
 
 <script setup lang="ts">
+import { useLayoutStore } from '@/store/layout';
+
 interface IProps {
   type: 'BILL' | 'INCOME' | 'COST';
-  icon?: string;
+  objectId: string;
   name: string;
   sum: number;
-  changeHandler?: Function;
-  deleteHandler?: Function;
+  icon?: string;
 }
 const props = defineProps<IProps>();
 
 const formatedSum = computed(() => `${props.sum} ₽`);
+
+const layoutStore = useLayoutStore();
+const { openModal } = layoutStore;
+
+const deleteHandler = () => {
+  openModal({
+    name: 'delete-modal',
+    objectType: props.type,
+    objectId: props.objectId,
+    objectName: props.name,
+  });
+};
 </script>
 
 <style lang="scss" scoped>

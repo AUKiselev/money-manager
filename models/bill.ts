@@ -1,5 +1,5 @@
 export interface IBill {
-  id: string,
+  _id: string,
   name: string,
   sum: number,
   icon: string

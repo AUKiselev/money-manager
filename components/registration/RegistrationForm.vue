@@ -13,6 +13,7 @@
     >
       <el-form-item class="registration-form__item">
         <el-input
+          ref="firstNameInput"
           v-model="registrationForm.firstName"
           class="registration-form__input"
           placeholder="Введите имя(необязательно)"
@@ -156,6 +157,11 @@ const submitForm = () => {
     }
   });
 };
+
+const firstNameInput = ref<HTMLInputElement | null>(null);
+onMounted(() => {
+  firstNameInput.value?.focus();
+});
 </script>
 
 <style lang="scss">
@@ -212,6 +218,7 @@ const submitForm = () => {
     height: 40px;
     border-radius: 8px;
     background-color: $turquoise1;
+    font-family: inherit;
     color: $white1;
     transition: all .3s;
 

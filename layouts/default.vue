@@ -1,5 +1,8 @@
 <template>
   <div class="layout">
+    <ClientOnly>
+      <DeleteModal v-if="modal.name === 'delete-modal'" />
+    </ClientOnly>
     <el-container class="page-wrapper">
       <el-aside class="main-sidebar__wrapper" :width="asideWidth">
         <SideMenu />
@@ -19,9 +22,10 @@ import { storeToRefs } from 'pinia';
 import Header from '@/components/layouts/Header.vue';
 import SideMenu from '@/components/layouts/SideMenu.vue';
 import { useLayoutStore } from '@/store/layout';
+import DeleteModal from '@/components/modals/deleteModal/DeleteModal.vue';
 
 const layoutStore = useLayoutStore();
-const { menuCollapsed } = storeToRefs(layoutStore);
+const { menuCollapsed, modal } = storeToRefs(layoutStore);
 
 const asideWidth = computed<string>(() => (menuCollapsed.value ? '64px' : '200px'));
 </script>
