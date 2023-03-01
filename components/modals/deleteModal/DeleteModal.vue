@@ -24,9 +24,12 @@ import ModalWrapper from '../ModalWrapper.vue';
 import { useLayoutStore } from '@/store/layout';
 import { useUserStore } from '@/store/user';
 import { useObjectsStore } from '@/store/objects';
+import { IObjectModal } from '@/models/modals';
 
 const layoutStore = useLayoutStore();
-const { modal } = storeToRefs(layoutStore);
+const { modal } = storeToRefs(layoutStore) as {
+  modal: Ref<IObjectModal>
+};
 
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);

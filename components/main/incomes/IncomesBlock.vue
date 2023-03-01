@@ -2,7 +2,7 @@
   <ClientOnly>
     <BlockWrapper title="Доходы">
       <template #content>
-        <ItemWrapper
+        <Item
           v-for="(item, index) of incomes"
           :key="`main-page-incomes-${index}`"
           :object-id="item._id"
@@ -10,7 +10,7 @@
           :name="item.name"
           type="INCOME"
         />
-        <!-- <NewIncomeItem /> -->
+        <NewItemButton type="INCOME" />
       </template>
     </BlockWrapper>
   </ClientOnly>
@@ -18,8 +18,8 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-// import NewIncomeItem from '@/components/main/incomes/NewIncomeItem.vue';
-import ItemWrapper from '@/components/main/ItemWrapper.vue';
+import NewItemButton from '@/components/main/NewItemButton.vue';
+import Item from '@/components/main/Item.vue';
 import { useObjectsStore } from '@/store/objects';
 
 const objectsStore = useObjectsStore();

@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 import { IBill } from '@/models/bill';
 import { ICost } from '@/models/cost';
 import { IIncome } from '@/models/income';
-import { deleteObject } from '@/api/objects';
+import { deleteObject, createObject } from '@/api/objects';
 
 export const useObjectsStore = defineStore('objectsStore', {
   state: () => ({
@@ -13,16 +13,18 @@ export const useObjectsStore = defineStore('objectsStore', {
   }),
 
   actions: {
-    setBills(bills: IBill[]) {
-      this.bills = bills;
-    },
+    objectsInit(objectType: string, objectList: ICost[] | IBill[] | IIncome[]) {
+      if (objectType === 'COST') {
+        this.costs = objectList as ICost[];
+      }
 
-    setCosts(costs: ICost[]) {
-      this.costs = costs;
-    },
+      if (objectType === 'BILL') {
+        this.bills = objectList as IBill[];
+      }
 
-    setIncomes(incomes: IIncome[]) {
-      this.incomes = incomes;
+      if (objectType === 'INCOME') {
+        this.incomes = objectList as IIncome[];
+      }
     },
 
     async deleteObjectAndUpdateList(
@@ -32,16 +34,22 @@ export const useObjectsStore = defineStore('objectsStore', {
     ) {
       const newObjectList = await deleteObject(objectType, objectId, userId);
 
-      if (objectType === 'COST') {
-        this.costs = newObjectList as ICost[];
+      if (newObjectList) {
+        this.objectsInit(objectType, newObjectList);
       }
+    },
 
-      if (objectType === 'BILL') {
-        this.bills = newObjectList as IBill[];
-      }
+    async createNewObject(
+      objectType: string,
+      userId: string,
+      name: string,
+      sum?: number | null,
+      limit?: number | null,
+    ) {
+      const newObjectList = await createObject(objectType, userId, name, sum, limit);
 
-      if (objectType === 'INCOME') {
-        this.incomes = newObjectList as IIncome[];
+      if (newObjectList) {
+        this.objectsInit(objectType, newObjectList);
       }
     },
   },

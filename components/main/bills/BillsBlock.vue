@@ -2,7 +2,7 @@
   <ClientOnly>
     <BlockWrapper title="Счета">
       <template #content>
-        <ItemWrapper
+        <Item
           v-for="(item, index) of bills"
           :key="`main-page-bills-${index}`"
           :object-id="item._id"
@@ -10,6 +10,7 @@
           :name="item.name"
           type="BILL"
         />
+        <NewItemButton type="BILL" />
       </template>
     </BlockWrapper>
   </ClientOnly>
@@ -17,7 +18,8 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import ItemWrapper from '@/components/main/ItemWrapper.vue';
+import Item from '@/components/main/Item.vue';
+import NewItemButton from '@/components/main/NewItemButton.vue';
 import { useObjectsStore } from '@/store/objects';
 
 const objectsStore = useObjectsStore();

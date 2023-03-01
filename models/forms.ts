@@ -10,3 +10,9 @@ export interface IAuthForm {
   email: string,
   password: string,
 }
+
+export interface INewItemForm {
+  name: string;
+  limit?: number | null
+  sum?: number | null
+}

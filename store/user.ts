@@ -41,10 +41,10 @@ export const useUserStore = defineStore('userStore', {
       const { incomes, bills, costs } = userData.user;
 
       const objectsStore = useObjectsStore();
-      const { setBills, setCosts, setIncomes } = objectsStore;
-      setBills(bills);
-      setCosts(costs);
-      setIncomes(incomes);
+      const { bills: storeBills, costs: storeCosts, incomes: storeIncomes } = storeToRefs(objectsStore);
+      storeBills.value = bills;
+      storeCosts.value = costs;
+      storeIncomes.value = incomes;
     },
 
     async registerUser(
