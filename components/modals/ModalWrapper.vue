@@ -10,7 +10,7 @@
         />
       </button>
       <div class="modal__content">
-        <slot name="content" :close-modal="closeHandler" />
+        <slot name="content" />
       </div>
     </div>
   </div>
@@ -35,6 +35,10 @@ onMounted(() => {
   setTimeout(() => {
     modalWrapper.value?.classList.add('_active');
   }, 0);
+});
+
+defineExpose({
+  closeHandler,
 });
 </script>
 

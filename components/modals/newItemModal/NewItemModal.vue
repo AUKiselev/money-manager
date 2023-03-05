@@ -1,6 +1,6 @@
 <template>
-  <ModalWrapper>
-    <template #content="parentProps">
+  <ModalWrapper ref="modalWrapper">
+    <template #content>
       <div class="new-item-modal">
         <p class="new-item-modal__title">
           {{ title }}
@@ -12,9 +12,7 @@
             :rules="rules"
             class="new-item-modal__form"
             @submit.prevent
-            @keyup.enter="submitHandler()?.then(res => {
-              res ? parentProps.closeModal() : null
-            })"
+            @keyup.enter="submitHandler()"
           >
             <el-form-item prop="name">
               <el-input
@@ -44,13 +42,12 @@
             </el-form-item>
           </el-form>
           <el-form-item class="new-item-modal__buttons">
-            <el-button class="new-item-modal__button cancel-button" @click="parentProps.closeModal">
+            <el-button class="new-item-modal__button cancel-button" @click=" closeModal();">
               Отменить
             </el-button>
             <el-button
-              class="new-item-modal__button submit-button" @click="submitHandler()?.then(res => {
-                res ? parentProps.closeModal() : null
-              })"
+              class="new-item-modal__button submit-button"
+              @click="submitHandler()"
             >
               Добавить
             </el-button>
@@ -95,6 +92,13 @@ const { modal } = storeToRefs(layoutStore) as {
 const objectsStore = useObjectsStore();
 const { createNewObject } = objectsStore;
 
+const modalWrapper = ref<InstanceType<typeof ModalWrapper> | null>(null);
+const closeModal = () => {
+  if (modalWrapper.value) {
+    modalWrapper.value.closeHandler();
+  }
+};
+
 const submitHandler = () => {
   const result = newItemFormRef.value?.validate((valid): boolean => {
     if (valid) {
@@ -103,6 +107,8 @@ const submitHandler = () => {
       createNewObject(modal.value.objectType, modal.value.userId, name, sum, limit);
 
       newItemFormRef.value?.resetFields();
+
+      closeModal();
       return true;
     }
     return false;

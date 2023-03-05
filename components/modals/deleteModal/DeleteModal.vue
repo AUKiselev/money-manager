@@ -1,15 +1,15 @@
 <template>
-  <ModalWrapper>
-    <template #content="parentProps">
+  <ModalWrapper ref="modalWrapper">
+    <template #content>
       <div class="delete-modal">
         <p class="delete-modal__title">
           {{ title }}
         </p>
         <div class="delete-modal__buttons">
-          <el-button class="delete-modal__button cancel-button" @click="parentProps.closeModal">
+          <el-button class="delete-modal__button cancel-button" @click="closeModal()">
             Нет
           </el-button>
-          <el-button class="delete-modal__button submit-button" @click="submitHandler(), parentProps.closeModal()">
+          <el-button class="delete-modal__button submit-button" @click="submitHandler()">
             Да
           </el-button>
         </div>
@@ -37,8 +37,16 @@ const { user } = storeToRefs(userStore);
 const objectsStore = useObjectsStore();
 const { deleteObjectAndUpdateList } = objectsStore;
 
+const modalWrapper = ref<InstanceType<typeof ModalWrapper> | null>(null);
+const closeModal = () => {
+  if (modalWrapper.value) {
+    modalWrapper.value.closeHandler();
+  }
+};
+
 const submitHandler = () => {
   deleteObjectAndUpdateList(modal.value.objectType, modal.value.objectId, user.value.id);
+  closeModal();
 };
 
 const title = computed(() => {
