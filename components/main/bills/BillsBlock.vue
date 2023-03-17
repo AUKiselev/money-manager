@@ -6,8 +6,7 @@
           v-for="(item, index) of bills"
           :key="`main-page-bills-${index}`"
           :object-id="item._id"
-          :sum="item.sum"
-          :name="item.name"
+          v-bind="item"
           type="BILL"
         />
         <NewItemButton type="BILL" />

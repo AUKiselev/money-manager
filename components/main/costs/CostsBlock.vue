@@ -6,8 +6,7 @@
           v-for="(item, index) of costs"
           :key="`main-page-costs-${index}`"
           :object-id="item._id"
-          :sum="item.sum"
-          :name="item.name"
+          v-bind="item"
           type="COST"
         />
         <NewItemButton type="COST" />

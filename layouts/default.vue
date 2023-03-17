@@ -3,6 +3,7 @@
     <ClientOnly>
       <DeleteModal v-if="modal.name === 'delete-modal'" />
       <NewItemModal v-if="modal.name === 'new-item-modal'" />
+      <ChangeModal v-if="modal.name === 'change-modal'" />
     </ClientOnly>
     <el-container class="page-wrapper">
       <el-aside class="main-sidebar__wrapper" :width="asideWidth">
@@ -25,6 +26,7 @@ import SideMenu from '@/components/layouts/SideMenu.vue';
 import { useLayoutStore } from '@/store/layout';
 import DeleteModal from '@/components/modals/deleteModal/DeleteModal.vue';
 import NewItemModal from '@/components/modals/newItemModal/NewItemModal.vue';
+import ChangeModal from '@/components/modals/changeModal/ChangeModal.vue';
 
 const layoutStore = useLayoutStore();
 const { menuCollapsed, modal } = storeToRefs(layoutStore);

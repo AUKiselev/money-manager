@@ -40,6 +40,7 @@ export const createObject = async (
   name: string,
   sum?: number | null,
   limit?: number | null,
+  icon?: string,
 ): Promise<IIncome[] | ICost[] | IBill[] | null> => {
   try {
     const { data } = await useFetchWithToken<IIncome | ICost | IBill>(
@@ -51,6 +52,48 @@ export const createObject = async (
           name,
           sum: sum || 0,
           limit: limit || 0,
+          icon,
+        },
+      },
+    );
+
+    if (!data.value) {
+      throw new Error('Ошибка запроса');
+    }
+
+    const { data: newArray } = await useFetchWithToken<IIncome[] | ICost[] | IBill[]>(
+      `${objectType.toLocaleLowerCase()}s/${userId}`,
+      {
+        method: 'GET',
+      },
+    );
+
+    return newArray.value;
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+};
+
+export const updateObject = async (
+  objectType: string,
+  userId: string,
+  objectId: string,
+  name: string,
+  sum?: number | null,
+  limit?: number | null,
+  icon?: string | null,
+): Promise<IIncome[] | ICost[] | IBill[] | null> => {
+  try {
+    const { data } = await useFetchWithToken<IIncome | ICost | IBill>(
+      `${objectType.toLocaleLowerCase()}s/${objectId}`,
+      {
+        method: 'PUT',
+        body: {
+          name,
+          sum: sum || 0,
+          limit: limit || 0,
+          icon,
         },
       },
     );

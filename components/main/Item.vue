@@ -4,7 +4,7 @@
       <div class="item__icon-wrapper">
         <Icon
           class="item__icon"
-          name="ic:baseline-plus"
+          :name="props.icon"
           size="25px"
         />
       </div>
@@ -16,7 +16,7 @@
             size="17px"
           />
         </button>
-        <button class="item__change-button">
+        <button class="item__change-button" @click="changeHandler">
           <Icon
             class="item__change-icon"
             name="tabler:pencil"
@@ -42,7 +42,7 @@ interface IProps {
   objectId: string;
   name: string;
   sum: number;
-  icon?: string;
+  icon: string;
 }
 const props = defineProps<IProps>();
 
@@ -57,6 +57,18 @@ const deleteHandler = () => {
     objectType: props.type,
     objectId: props.objectId,
     objectName: props.name,
+  });
+};
+
+const changeHandler = () => {
+  openModal({
+    name: 'change-modal',
+    objectType: props.type,
+    objectId: props.objectId,
+    objectName: props.name,
+    sum: props.sum,
+    icon: props.icon,
+    limit: null,
   });
 };
 </script>

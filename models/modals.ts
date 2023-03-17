@@ -7,7 +7,7 @@ export interface IObjectModal {
 
 export interface IChangeModal extends IObjectModal {
   sum: number;
-  limit?: number;
+  limit?: number | null;
   icon: string;
 }
 

@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 import { IBill } from '@/models/bill';
 import { ICost } from '@/models/cost';
 import { IIncome } from '@/models/income';
-import { deleteObject, createObject } from '@/api/objects';
+import { deleteObject, createObject, updateObject } from '@/api/objects';
 
 export const useObjectsStore = defineStore('objectsStore', {
   state: () => ({
@@ -26,6 +26,29 @@ export const useObjectsStore = defineStore('objectsStore', {
         this.incomes = objectList as IIncome[];
       }
     },
+
+    // objectsUpdate(objectType: string, object: ICost | IBill | IIncome) {
+    //   if (objectType === 'COST') {
+    //     let updatedCost = this.costs?.find(el => el._id === object._id);
+    //     if (updatedCost) {
+    //       updatedCost = object as ICost;
+    //     }
+    //   }
+
+    //   if (objectType === 'BILL') {
+    //     let updatedBill = this.bills?.find(el => el._id === object._id);
+    //     if (updatedBill) {
+    //       updatedBill = object as IBill;
+    //     }
+    //   }
+
+    //   if (objectType === 'INCOME') {
+    //     let updatedIncome = this.incomes?.find(el => el._id === object._id);
+    //     if (updatedIncome) {
+    //       updatedIncome = object as IIncome;
+    //     }
+    //   }
+    // },
 
     async deleteObjectAndUpdateList(
       objectType: string,
@@ -50,6 +73,22 @@ export const useObjectsStore = defineStore('objectsStore', {
 
       if (newObjectList) {
         this.objectsInit(objectType, newObjectList);
+      }
+    },
+
+    async updateObject(
+      objectType: string,
+      userId: string,
+      objectId: string,
+      name: string,
+      sum?: number | null,
+      limit?: number | null,
+      icon?: string | null,
+    ) {
+      const updatedList = await updateObject(objectType, userId, objectId, name, sum, limit, icon);
+
+      if (updatedList) {
+        this.objectsInit(objectType, updatedList);
       }
     },
   },
