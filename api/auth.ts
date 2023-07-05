@@ -9,7 +9,7 @@ export const userRegister = async (
   const { baseUrl } = useRuntimeConfig().public;
 
   try {
-    const { user, accessToken, refreshToken } = await $fetch<IUserData>('users/registration/', {
+    const response = await $fetch<IUserData>('users/registration/', {
       baseURL: baseUrl,
       method: 'POST',
       credentials: 'include',
@@ -21,11 +21,7 @@ export const userRegister = async (
       },
     });
 
-    return {
-      user,
-      accessToken,
-      refreshToken,
-    };
+    return response;
   } catch (e) {
     console.error(e);
     return undefined;
@@ -36,7 +32,7 @@ export const userLogin = async (email: string, password: string): Promise<IUserD
   const { baseUrl } = useRuntimeConfig().public;
 
   try {
-    const { user, accessToken, refreshToken } = await $fetch<IUserData>('users/login/', {
+    const response = await $fetch<IUserData>('users/login/', {
       baseURL: baseUrl,
       method: 'POST',
       credentials: 'include',
@@ -46,11 +42,7 @@ export const userLogin = async (email: string, password: string): Promise<IUserD
       },
     });
 
-    return {
-      user,
-      accessToken,
-      refreshToken,
-    };
+    return response;
   } catch (e) {
     console.error(e);
     return undefined;
@@ -61,17 +53,13 @@ export const refreshTokens = async (): Promise<IUserData | undefined> => {
   const { baseUrl } = useRuntimeConfig().public;
 
   try {
-    const { user, accessToken, refreshToken } = await $fetch<IUserData>('users/refresh/', {
+    const response = await $fetch<IUserData>('users/refresh/', {
       baseURL: baseUrl,
       method: 'GET',
       credentials: 'include',
     });
 
-    return {
-      user,
-      accessToken,
-      refreshToken,
-    };
+    return response;
   } catch (e) {
     console.error(e);
     return undefined;

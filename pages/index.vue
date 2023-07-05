@@ -7,9 +7,9 @@
 </template>
 
 <script setup lang="ts">
-import IncomesBlock from '@/components/main/incomes/IncomesBlock.vue';
-import BillsBlock from '@/components/main/bills/BillsBlock.vue';
-import CostsBlock from '@/components/main/costs/CostsBlock.vue';
+import IncomesBlock from '@/components/pages/index/incomes/IncomesBlock/index.vue';
+import BillsBlock from '@/components/pages/index/bills/BillsBlock/index.vue';
+import CostsBlock from '@/components/pages/index/costs/CostsBlock/index.vue';
 </script>
 
 <style lang="scss" scoped>

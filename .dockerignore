@@ -1,0 +1,14 @@
+# git
+.git
+.gitignore
+
+# node modules
+node_modules
+
+# nuxt
+.nuxt
+.output
+
+# environment
+Dockerfile
+README.md

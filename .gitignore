@@ -6,6 +6,6 @@ node_modules
 .output
 .env
 dist
-# .development.env
-# .production.env
+.development.env
+.production.env
 

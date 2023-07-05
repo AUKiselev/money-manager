@@ -1,11 +1,13 @@
 import { defineStore } from 'pinia';
-import { IObjectModal, IChangeModal, INewItemModal } from '@/models/modals';
+import {
+  IObjectModal, IChangeModal, INewItemModal, ITransactionModal,
+} from '@/models/modals';
 
 export const useLayoutStore = defineStore('layoutStore', {
   state: () => ({
     menuCollapsed: false as boolean,
     isLoading: false as boolean,
-    modal: {} as IObjectModal | IChangeModal | INewItemModal,
+    modal: {} as IObjectModal | IChangeModal | INewItemModal | ITransactionModal,
   }),
 
   actions: {
@@ -13,7 +15,7 @@ export const useLayoutStore = defineStore('layoutStore', {
       this.menuCollapsed = !this.menuCollapsed;
     },
 
-    openModal(modalObject: IObjectModal | IChangeModal | INewItemModal) {
+    openModal(modalObject: IObjectModal | IChangeModal | INewItemModal | ITransactionModal) {
       this.modal = modalObject;
     },
 

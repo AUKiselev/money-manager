@@ -12,14 +12,15 @@
             :rules="rules"
             class="new-item-modal__form"
             @submit.prevent
-            @keyup.enter="submitHandler()"
+            @keyup.enter="submitHandler"
+            @keyup.esc="closeModal"
           >
             <el-form-item prop="name">
               <el-input
                 ref="nameInput"
                 v-model="newItemForm.name"
                 class="new-item-modal__form-input"
-                :placeholder="placeholder"
+                :placeholder="nameInputPlaceholder"
               />
             </el-form-item>
 
@@ -42,12 +43,12 @@
             </el-form-item>
           </el-form>
           <el-form-item class="new-item-modal__buttons">
-            <el-button class="new-item-modal__button cancel-button" @click=" closeModal();">
+            <el-button class="new-item-modal__button cancel-button" @click="closeModal">
               Отменить
             </el-button>
             <el-button
               class="new-item-modal__button submit-button"
-              @click="submitHandler()"
+              @click="submitHandler"
             >
               Добавить
             </el-button>
@@ -130,7 +131,7 @@ const title = computed(() => {
   return '';
 });
 
-const placeholder = computed(() => {
+const nameInputPlaceholder = computed(() => {
   if (modal.value.objectType === 'BILL') {
     return 'Введите название счета';
   }

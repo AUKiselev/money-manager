@@ -1,7 +1,10 @@
 export interface ICost {
-  _id: string
+  _id: string;
   name: string;
   sum: number;
   limit: number;
-  icon: string;
+  settings: {
+    icon: string;
+    color: string;
+  }
 }

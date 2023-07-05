@@ -23,3 +23,7 @@ export interface IChangeFrom {
   sum: number | null
   icon: string
 }
+
+export interface ITransactionForm {
+  value: number | null
+}

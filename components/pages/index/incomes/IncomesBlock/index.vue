@@ -1,15 +1,15 @@
 <template>
   <ClientOnly>
-    <BlockWrapper title="Счета">
+    <BlockWrapper title="Доходы">
       <template #content>
         <Item
-          v-for="(item, index) of bills"
-          :key="`main-page-bills-${index}`"
+          v-for="(item, index) of incomes"
+          :key="`main-page-incomes-${index}`"
           :object-id="item._id"
           v-bind="item"
-          type="BILL"
+          type="INCOME"
         />
-        <NewItemButton type="BILL" />
+        <NewItemButton type="INCOME" />
       </template>
     </BlockWrapper>
   </ClientOnly>
@@ -17,12 +17,12 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import Item from '@/components/main/Item.vue';
-import NewItemButton from '@/components/main/NewItemButton.vue';
+import NewItemButton from '@/components/pages/index/NewItemButton/index.vue';
 import { useObjectsStore } from '@/store/objects';
 
 const objectsStore = useObjectsStore();
-const { bills } = storeToRefs(objectsStore);
+const { incomes } = storeToRefs(objectsStore);
+
 </script>
 
 <style lang="scss" scoped>

@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import AuthForm from '@/components/auth/AuthForm.vue';
+import AuthForm from '@/components/pages/auth/AuthForm/index.vue';
 
 definePageMeta({
   layout: 'empty-layout',

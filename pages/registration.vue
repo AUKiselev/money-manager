@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import RegistrationForm from '@/components/registration/RegistrationForm.vue';
+import RegistrationForm from '@/components/pages/registration/RegistrationForm/index.vue';
 
 definePageMeta({
   layout: 'empty-layout',

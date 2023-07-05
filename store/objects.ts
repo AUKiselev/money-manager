@@ -3,7 +3,9 @@ import { defineStore } from 'pinia';
 import { IBill } from '@/models/bill';
 import { ICost } from '@/models/cost';
 import { IIncome } from '@/models/income';
-import { deleteObject, createObject, updateObject } from '@/api/objects';
+import {
+  deleteObject, createObject, updateObject, getOneBillById, getOneCostById, getOneIncomeById,
+} from '@/api/objects';
 
 export const useObjectsStore = defineStore('objectsStore', {
   state: () => ({
@@ -13,7 +15,7 @@ export const useObjectsStore = defineStore('objectsStore', {
   }),
 
   actions: {
-    objectsInit(objectType: string, objectList: ICost[] | IBill[] | IIncome[]) {
+    objectsInit(objectType: 'COST' | 'BILL' | 'INCOME', objectList: ICost[] | IBill[] | IIncome[]) {
       if (objectType === 'COST') {
         this.costs = objectList as ICost[];
       }
@@ -51,7 +53,7 @@ export const useObjectsStore = defineStore('objectsStore', {
     // },
 
     async deleteObjectAndUpdateList(
-      objectType: string,
+      objectType: 'COST' | 'BILL' | 'INCOME',
       objectId: string,
       userId: string,
     ) {
@@ -63,7 +65,7 @@ export const useObjectsStore = defineStore('objectsStore', {
     },
 
     async createNewObject(
-      objectType: string,
+      objectType: 'COST' | 'BILL' | 'INCOME',
       userId: string,
       name: string,
       sum?: number | null,
@@ -77,7 +79,7 @@ export const useObjectsStore = defineStore('objectsStore', {
     },
 
     async updateObject(
-      objectType: string,
+      objectType: 'COST' | 'BILL' | 'INCOME',
       userId: string,
       objectId: string,
       name: string,
@@ -89,6 +91,40 @@ export const useObjectsStore = defineStore('objectsStore', {
 
       if (updatedList) {
         this.objectsInit(objectType, updatedList);
+      }
+    },
+
+    async getOneObject(objectType: 'COST' | 'BILL' | 'INCOME', objectId: string): Promise<void> {
+      if (objectType === 'BILL') {
+        const newBill = await getOneBillById(objectId);
+        if (!newBill) return;
+
+        this.bills?.forEach(el => {
+          if (el._id === newBill._id) {
+            // eslint-disable-next-line
+            el.sum = newBill.sum;
+          }
+        });
+      } else if (objectType === 'COST') {
+        const newCost = await getOneCostById(objectId);
+        if (!newCost) return;
+
+        this.costs?.forEach(el => {
+          if (el._id === newCost._id) {
+            // eslint-disable-next-line
+            el.sum = newCost.sum;
+          }
+        });
+      } else if (objectType === 'INCOME') {
+        const newIncome = await getOneIncomeById(objectId);
+        if (!newIncome) return;
+
+        this.incomes?.forEach(el => {
+          if (el._id === newIncome._id) {
+            // eslint-disable-next-line
+            el.sum = newIncome.sum;
+          }
+        });
       }
     },
   },

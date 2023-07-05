@@ -28,17 +28,17 @@ export const useUserStore = defineStore('userStore', {
   },
 
   actions: {
-    initData(userData: IUserData) {
+    initData(data: IUserData) {
       const {
         id, email, firstName, lastName,
-      } = userData.user;
+      } = data.userData.user;
       this.user = {
         id, email, firstName, lastName,
       };
-      this.accessToken = userData.accessToken;
-      localStorage.setItem('Authorization', `Bearer ${userData.accessToken}`);
+      this.accessToken = data.accessToken;
+      localStorage.setItem('Authorization', `Bearer ${data.accessToken}`);
 
-      const { incomes, bills, costs } = userData.user;
+      const { incomes, bills, costs } = data.userData;
 
       const objectsStore = useObjectsStore();
       const { bills: storeBills, costs: storeCosts, incomes: storeIncomes } = storeToRefs(objectsStore);
@@ -107,7 +107,7 @@ export const useUserStore = defineStore('userStore', {
         isLoading.value = true;
         const response = await refreshTokens();
 
-        if (!response?.user || !response?.refreshToken || !response?.accessToken) {
+        if (!response?.userData || !response?.refreshToken || !response?.accessToken) {
           throw new Error('Ошибка запроса');
         }
 

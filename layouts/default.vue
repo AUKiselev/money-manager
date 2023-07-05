@@ -1,10 +1,5 @@
 <template>
   <div class="layout">
-    <ClientOnly>
-      <DeleteModal v-if="modal.name === 'delete-modal'" />
-      <NewItemModal v-if="modal.name === 'new-item-modal'" />
-      <ChangeModal v-if="modal.name === 'change-modal'" />
-    </ClientOnly>
     <el-container class="page-wrapper">
       <el-aside class="main-sidebar__wrapper" :width="asideWidth">
         <SideMenu />
@@ -16,6 +11,12 @@
         <slot />
       </el-container>
     </el-container>
+    <ClientOnly>
+      <DeleteModal v-if="modal.name === 'delete-modal'" />
+      <NewItemModal v-if="modal.name === 'new-item-modal'" />
+      <ChangeModal v-if="modal.name === 'change-modal'" />
+      <TransactionModal v-if="modal.name === 'transaction-modal'" />
+    </ClientOnly>
   </div>
 </template>
 
@@ -24,9 +25,10 @@ import { storeToRefs } from 'pinia';
 import Header from '@/components/layouts/Header.vue';
 import SideMenu from '@/components/layouts/SideMenu.vue';
 import { useLayoutStore } from '@/store/layout';
-import DeleteModal from '@/components/modals/deleteModal/DeleteModal.vue';
-import NewItemModal from '@/components/modals/newItemModal/NewItemModal.vue';
-import ChangeModal from '@/components/modals/changeModal/ChangeModal.vue';
+import DeleteModal from '@/components/modals/DeleteModal/index.vue';
+import NewItemModal from '@/components/modals/NewItemModal/index.vue';
+import ChangeModal from '@/components/modals/ChangeModal/index.vue';
+import TransactionModal from '@/components/modals/TransactionModal/index.vue';
 
 const layoutStore = useLayoutStore();
 const { menuCollapsed, modal } = storeToRefs(layoutStore);

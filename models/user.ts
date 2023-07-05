@@ -8,7 +8,8 @@ export interface IUser {
   firstName?: string,
   lastName?: string,
 }
-export interface IUserFullInfo extends IUser {
+export interface IUserFullInfo {
+  user: IUser
   bills: IBill[],
   incomes: IIncome[],
   costs: ICost[],
@@ -17,5 +18,5 @@ export interface IUserFullInfo extends IUser {
 export interface IUserData {
   accessToken: string;
   refreshToken: string;
-  user: IUserFullInfo
+  userData: IUserFullInfo
 }

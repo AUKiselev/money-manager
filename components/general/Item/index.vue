@@ -1,10 +1,17 @@
 <template>
-  <section :class="['item', props.type.toLowerCase()]">
+  <div
+    :class="['item', props.type.toLowerCase(), 'draggable-block']"
+    draggable="true"
+    @dragstart="dragStart($event)"
+    @drop="onDrop($event)"
+    @dragenter.prevent
+    @dragover.prevent
+  >
     <div class="item__helpers">
       <div class="item__icon-wrapper">
         <Icon
           class="item__icon"
-          :name="props.icon"
+          :name="props.settings?.icon ? props.settings.icon : ''"
           size="25px"
         />
       </div>
@@ -31,7 +38,7 @@
     <p class="item__sum">
       {{ formatedSum }}
     </p>
-  </section>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -42,7 +49,10 @@ interface IProps {
   objectId: string;
   name: string;
   sum: number;
-  icon: string;
+  settings: {
+    icon: string
+    color: string;
+  }
 }
 const props = defineProps<IProps>();
 
@@ -67,9 +77,50 @@ const changeHandler = () => {
     objectId: props.objectId,
     objectName: props.name,
     sum: props.sum,
-    icon: props.icon,
+    settings: props.settings,
     limit: null,
   });
+};
+
+const dragStart = (event: DragEvent) => {
+  const transferData = {
+    id: props.objectId,
+    name: props.name,
+    type: props.type,
+  };
+
+  event.dataTransfer?.setData('objectFrom', JSON.stringify(transferData));
+};
+
+const onDrop = (event: DragEvent) => {
+  const strObjectFrom = event.dataTransfer?.getData('objectFrom');
+  if (strObjectFrom) {
+    const objectFrom = JSON.parse(strObjectFrom);
+
+    let transactionType = null as 'INCOME' | 'EXPENSE' | 'TRANSFER' | null;
+    if (objectFrom.type === 'INCOME' && props.type === 'BILL') {
+      transactionType = 'INCOME';
+    } else if (objectFrom.type === 'BILL' && props.type === 'COST') {
+      transactionType = 'EXPENSE';
+    } else if (objectFrom.type === 'BILL' && props.type === 'BILL') {
+      transactionType = 'TRANSFER';
+    }
+
+    if (transactionType) {
+      openModal({
+        name: 'transaction-modal',
+        type: transactionType,
+        from: {
+          id: objectFrom.id,
+          name: objectFrom.name,
+        },
+        to: {
+          id: props.objectId,
+          name: props.name,
+        },
+      });
+    }
+  }
 };
 </script>
 

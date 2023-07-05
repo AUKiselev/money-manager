@@ -4,7 +4,11 @@
       Вход в аккаунт
     </h2>
 
-    <el-form
+    <el-button class="auth-form__submit" @click="submitForm()">
+      Войти
+    </el-button>
+
+    <!-- <el-form
       ref="formRef"
       :model="authForm"
       :rules="rules"
@@ -41,56 +45,59 @@
       <NuxtLink class="auth-form__registration-link" to="/registration">
         Регистрация
       </NuxtLink>
-    </p>
+    </p> -->
   </section>
 </template>
 
 <script setup lang="ts">
-import type { FormInstance, FormRules } from 'element-plus';
-import { IAuthForm } from '@/models/forms';
+import type { FormInstance } from 'element-plus';
+// import { IAuthForm } from '@/models/forms';
 import { useUserStore } from '@/store/user';
 
 const formRef = ref<FormInstance>();
-const authForm = reactive<IAuthForm>({
-  email: '',
-  password: '',
-});
+// const authForm = reactive<IAuthForm>({
+//   email: '',
+//   password: '',
+// });
 
-const rules = reactive<FormRules>({
-  email: [
-    {
-      required: true,
-      message: 'Введите e-mail',
-      trigger: 'submit',
-    },
-  ],
-  password: [
-    { required: true, message: 'Введите пароль', trigger: 'submit' },
-  ],
-});
+// const rules = reactive<FormRules>({
+//   email: [
+//     {
+//       required: true,
+//       message: 'Введите e-mail',
+//       trigger: 'submit',
+//     },
+//   ],
+//   password: [
+//     { required: true, message: 'Введите пароль', trigger: 'submit' },
+//   ],
+// });
 
 const userStore = useUserStore();
 const { authUser } = userStore;
-const submitForm = () => {
-  formRef.value?.validate(async valid => {
-    if (valid) {
-      const { email, password } = authForm;
+const submitForm = async () => {
+  // formRef.value?.validate(async valid => {
+  //   if (valid) {
+  // const { email, password } = authForm;
 
-      try {
-        const isSuccess = await authUser(email, password);
-        if (!isSuccess) {
-          throw new Error('Some error');
-        }
+  const email = 'test-user';
+  const password = '1234';
 
-        const router = useRouter();
-        router.push({ path: '/' });
-      } catch (e) {
-        console.error(e);
-      }
-
-      formRef.value?.resetFields();
+  try {
+    const isSuccess = await authUser(email, password);
+    if (!isSuccess) {
+      throw new Error('Some error');
     }
-  });
+
+    const router = useRouter();
+    router.push({ path: '/' });
+  } catch (e) {
+    console.error(e);
+  }
+
+  formRef.value?.resetFields();
+  //   }
+  // });
 };
 
 const emailInput = ref<HTMLInputElement | null>(null);

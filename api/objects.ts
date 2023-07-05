@@ -115,3 +115,42 @@ export const updateObject = async (
     return null;
   }
 };
+
+export const getOneBillById = async (billId: string): Promise<IBill | null> => {
+  try {
+    const { data } = await useFetchWithToken<IBill>(`bills/bill/${billId}`, {
+      method: 'GET',
+    });
+
+    return data.value;
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+};
+
+export const getOneCostById = async (costId: string): Promise<ICost | null> => {
+  try {
+    const { data } = await useFetchWithToken<ICost>(`costs/cost/${costId}`, {
+      method: 'GET',
+    });
+
+    return data.value;
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+};
+
+export const getOneIncomeById = async (incomeId: string): Promise<IIncome | null> => {
+  try {
+    const { data } = await useFetchWithToken<IIncome>(`incomes/income/${incomeId}`, {
+      method: 'GET',
+    });
+
+    return data.value;
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+};
