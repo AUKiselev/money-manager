@@ -97,6 +97,8 @@ const onDrop = (event: DragEvent) => {
   if (strObjectFrom) {
     const objectFrom = JSON.parse(strObjectFrom);
 
+    if (objectFrom.id === props.objectId) return;
+
     let transactionType = null as 'INCOME' | 'EXPENSE' | 'TRANSFER' | null;
     if (objectFrom.type === 'INCOME' && props.type === 'BILL') {
       transactionType = 'INCOME';

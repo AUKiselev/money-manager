@@ -9,9 +9,9 @@ import {
 
 export const useObjectsStore = defineStore('objectsStore', {
   state: () => ({
-    bills: [] as IBill[] | null,
-    costs: [] as ICost[] | null,
-    incomes: [] as IIncome[] | null,
+    bills: [] as IBill[],
+    costs: [] as ICost[],
+    incomes: [] as IIncome[],
   }),
 
   actions: {
@@ -94,12 +94,42 @@ export const useObjectsStore = defineStore('objectsStore', {
       }
     },
 
-    async getOneObject(objectType: 'COST' | 'BILL' | 'INCOME', objectId: string): Promise<void> {
+    updateOneObjectSumInStore(
+      objectType: 'COST' | 'BILL' | 'INCOME',
+      objectId: string,
+      differenceValue: number,
+      operator: 'sum' | 'subtraction',
+    ) {
+      // if (objectType === 'BILL') {
+      //   this.bills.forEach(el => {
+      //     if (el._id === objectId) {
+      //       // eslint-disable-next-line
+      //       el.sum = newSum;
+      //     }
+      //   });
+      // } else if (objectType === 'COST') {
+      //   this.costs.forEach(el => {
+      //     if ()
+      //   })
+      // }
+      const lowerCaseType = objectType.toLocaleLowerCase() as 'cost' | 'bill' | 'income';
+
+      this[`${lowerCaseType}s`].forEach(el => {
+        if (el._id === objectId) {
+          // eslint-disable-next-line
+          if (operator === 'sum') el.sum += differenceValue;
+          // eslint-disable-next-line
+          if (operator === 'subtraction') el.sum -= differenceValue;
+        }
+      });
+    },
+
+    async getOneObject(objectType: 'COST' | 'BILL' | 'INCOME', objectId: string) {
       if (objectType === 'BILL') {
         const newBill = await getOneBillById(objectId);
         if (!newBill) return;
 
-        this.bills?.forEach(el => {
+        this.bills.forEach(el => {
           if (el._id === newBill._id) {
             // eslint-disable-next-line
             el.sum = newBill.sum;
@@ -109,7 +139,7 @@ export const useObjectsStore = defineStore('objectsStore', {
         const newCost = await getOneCostById(objectId);
         if (!newCost) return;
 
-        this.costs?.forEach(el => {
+        this.costs.forEach(el => {
           if (el._id === newCost._id) {
             // eslint-disable-next-line
             el.sum = newCost.sum;
@@ -119,7 +149,7 @@ export const useObjectsStore = defineStore('objectsStore', {
         const newIncome = await getOneIncomeById(objectId);
         if (!newIncome) return;
 
-        this.incomes?.forEach(el => {
+        this.incomes.forEach(el => {
           if (el._id === newIncome._id) {
             // eslint-disable-next-line
             el.sum = newIncome.sum;

@@ -12,7 +12,7 @@ export const useTransactionsStore = defineStore('transactionsStore', {
   }),
 
   actions: {
-    async createTransaction(transactionValue: number | null) {
+    async createTransaction(transactionValue: number) {
       const userStore = useUserStore();
       const { user } = storeToRefs(userStore);
 
@@ -24,6 +24,7 @@ export const useTransactionsStore = defineStore('transactionsStore', {
       const transactionData = {
         user: user.value.id,
         type: modal.value.type,
+        createDate: Date.now(),
         value: transactionValue,
         billFrom: modal.value.type !== 'INCOME' ? modal.value.from.id : undefined,
         billTo: modal.value.type !== 'EXPENSE' ? modal.value.to.id : undefined,
@@ -32,20 +33,19 @@ export const useTransactionsStore = defineStore('transactionsStore', {
       };
 
       const createdTransaction = await createTransactionFetch(transactionData);
-      console.log(createdTransaction);
       if (createdTransaction) {
         const objectsStore = useObjectsStore();
-        const { getOneObject } = objectsStore;
+        const { updateOneObjectSumInStore } = objectsStore;
 
         if (createdTransaction.type === 'EXPENSE' && createdTransaction.billFrom && createdTransaction.costTo) {
-          await getOneObject('BILL', createdTransaction.billFrom);
-          await getOneObject('COST', createdTransaction.costTo);
+          updateOneObjectSumInStore('BILL', createdTransaction.billFrom, createdTransaction.value, 'subtraction');
+          updateOneObjectSumInStore('COST', createdTransaction.costTo, createdTransaction.value, 'sum');
         } else if (createdTransaction.type === 'INCOME' && createdTransaction.incomeFrom && createdTransaction.billTo) {
-          await getOneObject('INCOME', createdTransaction.incomeFrom);
-          await getOneObject('BILL', createdTransaction.billTo);
+          updateOneObjectSumInStore('INCOME', createdTransaction.incomeFrom, createdTransaction.value, 'sum');
+          updateOneObjectSumInStore('BILL', createdTransaction.billTo, createdTransaction.value, 'sum');
         } else if (createdTransaction.type === 'TRANSFER' && createdTransaction.billFrom && createdTransaction.billTo) {
-          await getOneObject('BILL', createdTransaction.billFrom);
-          await getOneObject('BILL', createdTransaction.billTo);
+          updateOneObjectSumInStore('BILL', createdTransaction.billFrom, createdTransaction.value, 'subtraction');
+          updateOneObjectSumInStore('BILL', createdTransaction.billTo, createdTransaction.value, 'sum');
         }
       }
     },
